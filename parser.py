@@ -75,7 +75,7 @@ class Parser:
 
 	def parse_import(self):
 		key = self.eat('IMPORT').value
-		return f'<script src="{key}.js"></script>'
+		return f'<script src="https://cdn.jsdelivr.net/gh/kunshbisht/sml/{key}.js"></script>'
 
 	def parse_children(self):
 		if self.nextIs('LBRACE'): return self.parse_block()
