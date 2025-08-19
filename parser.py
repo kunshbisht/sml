@@ -41,6 +41,8 @@ def lex(code: str):
 			continue
 		elif kind == "STRING":
 			value = value[1:-1]
+		elif kind == "JS_LITERAL":
+			value = value[2:-2].strip()
 		elif kind == "IMPORT":
 			value = value[1:]
 		tokens.append(Token(type=kind, value=value))
@@ -87,11 +89,15 @@ class Parser:
 	def parse_child(self):
 		if self.nextIs('IDENT'): return self.parse_el()
 		elif self.nextIs('STRING'): return self.parse_string()
+		elif self.nextIs('JS_LITERAL'): return self.parse_js()
 		elif self.nextIs('IMPORT'): return self.parse_import()
 		raise TypeError(f'Unexpected type {self.peek().type}')
 	
 	def parse_string(self):
 		return self.eat('STRING').value.replace('\\"', '"')
+	
+	def parse_js(self):
+		return self.eat('JS_LITERAL').value
 	
 	def parse_block(self):
 		result = []
